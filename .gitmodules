@@ -1,0 +1,18 @@
+[submodule "Aloidia"]
+	path = Aloidia
+	url = https://github.com/UCMercedACM/Aloidia.git
+[submodule "Novaly"]
+	path = Novaly
+	url = https://github.com/UCMercedACM/Novaly.git
+[submodule "Obvia"]
+	path = Obvia
+	url = https://github.com/UCMercedACM/Obvia.git
+[submodule "Onama"]
+	path = Onama
+	url = https://github.com/UCMercedACM/Onama.git
+[submodule "Anlisp"]
+	path = Anlisp
+	url = https://github.com/UCMercedACM/Anlisp.git
+[submodule "Pounit"]
+	path = Pounit
+	url = https://github.com/UCMercedACM/Pounit.git
