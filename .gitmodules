@@ -7,9 +7,6 @@
 [submodule "Onama"]
 	path = Onama
 	url = https://github.com/UCMercedACM/Onama.git
-[submodule "Anlisp"]
-	path = Anlisp
-	url = https://github.com/UCMercedACM/Anlisp.git
 [submodule "Pounit"]
 	path = Pounit
 	url = https://github.com/UCMercedACM/Pounit.git
