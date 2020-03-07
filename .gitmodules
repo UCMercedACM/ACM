@@ -1,6 +1,3 @@
-[submodule "Obvia"]
-	path = Obvia
-	url = https://github.com/UCMercedACM/Obvia.git
 [submodule "Onama"]
 	path = Onama
 	url = https://github.com/UCMercedACM/Onama.git
