@@ -4,3 +4,6 @@
 [submodule "Mariposa"]
 	path = Mariposa
 	url = https://github.com/UCMercedACM/Mariposa.git
+[submodule "Tuolumne"]
+	path = Tuolumne
+	url = https://github.com/UCMercedACM/Tuolumne.git
