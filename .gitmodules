@@ -1,6 +1,3 @@
-[submodule "Aloidia"]
-	path = Aloidia
-	url = https://github.com/UCMercedACM/Aloidia.git
 [submodule "Novaly"]
 	path = Novaly
 	url = https://github.com/UCMercedACM/Novaly.git
