@@ -7,3 +7,12 @@
 [submodule "Tuolumne"]
 	path = Tuolumne
 	url = https://github.com/UCMercedACM/Tuolumne.git
+[submodule "Half-Dome"]
+	path = Half-Dome
+	url = https://github.com/UCMercedACM/Half-Dome.git
+[submodule "Tenaya"]
+	path = Tenaya
+	url = https://github.com/UCMercedACM/Tenaya.git
+[submodule "Cathedral"]
+	path = Cathedral
+	url = https://github.com/UCMercedACM/Cathedral.git
