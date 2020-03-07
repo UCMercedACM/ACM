@@ -1,6 +1,3 @@
-[submodule "Onama"]
-	path = Onama
-	url = https://github.com/UCMercedACM/Onama.git
 [submodule "Pounit"]
 	path = Pounit
 	url = https://github.com/UCMercedACM/Pounit.git
