@@ -1,3 +1,6 @@
 [submodule "Chapter-Website"]
 	path = Chapter-Website
 	url = https://github.com/UCMercedACM/Chapter-Website.git
+[submodule "Mariposa"]
+	path = Mariposa
+	url = https://github.com/UCMercedACM/Mariposa.git
