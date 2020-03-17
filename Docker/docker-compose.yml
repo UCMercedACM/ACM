@@ -1,0 +1,39 @@
+version: "3.7"
+
+services:
+
+  database:
+    container_name: postgres
+    image: postgres:12.2-alpine # use official postgres version 12.2
+    restart: always
+    volumes:
+      - database-data:/var/lib/postgresql/data/ # persist data even if container shuts down
+    env_file: 
+      - database.env
+    ports: 
+      - 35432:5432 # expose container port to the local machine's port
+
+  chapter-website:
+    container_name: Chapter-Website
+    image: chapter-website:dev
+    build:
+      context: ../Chapter-Website
+      dockerfile: Dockerfile
+    depends_on:
+      - half-dome
+    ports: 
+      - 127.0.0.1:4200:4200 # expose container port to the local machine's port
+
+  half-dome:
+    container_name: Half-Dome
+    image: half-dome:dev
+    build:
+      context: ../Half-Dome
+      dockerfile: Dockerfile
+    depends_on:
+      - database
+    ports: 
+      - 127.0.0.1:4201:4201 # expose container port to the local machine's port
+
+volumes:
+  database-data: # named volumes can be managed easier using docker-compose
