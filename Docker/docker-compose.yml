@@ -11,29 +11,38 @@ services:
     env_file: 
       - database.env
     ports: 
-      - 35432:5432 # expose container port to the local machine's port
+      - target: 5432 # the port inside the container
+        published: 35432 # the publicly exposed port
+        protocol: tcp # the port protocol (tcp or udp)
+        mode: bridge # bridge networks are used to connect multiple containers together
 
   chapter-website:
     container_name: Chapter-Website
-    image: chapter-website:dev
+    image: chapter-website:v0.1
     build:
       context: ../Chapter-Website
       dockerfile: Dockerfile
     depends_on:
       - half-dome
     ports: 
-      - 127.0.0.1:4200:4200 # expose container port to the local machine's port
+      - target: 4200 # the port inside the container
+        published: 4200 # the publicly exposed port
+        protocol: tcp # the port protocol (tcp or udp)
+        mode: bridge # bridge networks are used to connect multiple containers together
 
   half-dome:
     container_name: Half-Dome
-    image: half-dome:dev
+    image: half-dome:v1.1
     build:
       context: ../Half-Dome
       dockerfile: Dockerfile
     depends_on:
       - database
     ports: 
-      - 127.0.0.1:4201:4201 # expose container port to the local machine's port
+      - target: 4201 # the port inside the container
+        published: 4201 # the publicly exposed port
+        protocol: tcp # the port protocol (tcp or udp)
+        mode: bridge # bridge networks are used to connect multiple containers together
 
 volumes:
   database-data: # named volumes can be managed easier using docker-compose
