@@ -19,7 +19,7 @@ Below is a list of possible combinations to run the ACM Website locally
 1. Run the root yaml compose file `docker-compose up -d`
 2. To create all tables to store data on run the bash script with this command `chmod +x database_setup.sh && ./database_setup.sh`
 
-> Note: When running the project this way the Chapter Website opens on `http://127.0.0.1:4200/home`
+> Note: When running the project this way all applications opens on `http://127.0.0.1:<portNumber>`
 
 To check if they are setup correctly:
 
