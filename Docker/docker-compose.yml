@@ -36,8 +36,12 @@ services:
     build:
       context: ../Half-Dome
       dockerfile: Dockerfile
+    env_file: 
+      - ../Half-Dome/.env
     depends_on:
       - database
+    environment: 
+      POSTGRES_HOST: host.docker.internal
     ports: 
       - target: 4201 # the port inside the container
         published: 4201 # the publicly exposed port
