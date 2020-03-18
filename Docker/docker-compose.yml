@@ -5,7 +5,7 @@ services:
   database:
     container_name: postgres
     image: postgres:12.2-alpine # use official postgres version 12.2
-    restart: always
+    restart: unless-stopped
     volumes:
       - database-data:/var/lib/postgresql/data/ # persist data even if container shuts down
     env_file: 
@@ -19,6 +19,7 @@ services:
   chapter-website:
     container_name: Chapter-Website
     image: chapter-website:v0.1
+    restart: unless-stopped
     build:
       context: ../Chapter-Website
       dockerfile: Dockerfile
@@ -33,6 +34,7 @@ services:
   half-dome:
     container_name: Half-Dome
     image: half-dome:v1.1
+    restart: unless-stopped
     build:
       context: ../Half-Dome
       dockerfile: Dockerfile
