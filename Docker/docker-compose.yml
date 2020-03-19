@@ -15,6 +15,18 @@ services:
         published: 35432 # the publicly exposed port
         protocol: tcp # the port protocol (tcp or udp)
         mode: bridge # bridge networks are used to connect multiple containers together
+  
+  pgadmin:
+    container_name: pgadmin
+    image: dpage/pgadmin4
+    environment:
+      PGADMIN_DEFAULT_EMAIL: "acm@ucmerced.edu"
+      PGADMIN_DEFAULT_PASSWORD: "PgAdmin2020!"
+    ports: 
+      - target: 80 # the port inside the container
+        published: 8080 # the publicly exposed port
+        protocol: tcp # the port protocol (tcp or udp)
+        mode: bridge # bridge networks are used to connect multiple containers together
 
   chapter-website:
     container_name: Chapter-Website
@@ -44,6 +56,7 @@ services:
       - database
     environment: 
       POSTGRES_HOST: host.docker.internal
+      POSTGRES_PORT: 35432
     ports: 
       - target: 4201 # the port inside the container
         published: 4201 # the publicly exposed port
