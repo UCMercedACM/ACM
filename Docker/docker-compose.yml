@@ -57,6 +57,9 @@ services:
     environment: 
       POSTGRES_HOST: host.docker.internal
       POSTGRES_PORT: 35432
+      POSTGRES_DB: acm
+      POSTGRES_USER: docker
+      POSTGRES_PASSWORD: docker
     ports: 
       - target: 4201 # the port inside the container
         published: 4201 # the publicly exposed port
