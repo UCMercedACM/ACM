@@ -4,6 +4,22 @@
 
 ACM's Website Mono-Repository. Inside contains submodules for all micro-frontend and micro-backend apis
 
+## Prequisities
+
+1. Docker version
+
+   ```bash
+   $ docker -v
+   Docker version 19.03.8, build afacb8b
+   ```
+
+2. Docker Compose version
+
+   ```bash
+   $ docker-compose -v
+   docker-compose version 1.25.4, build 8d51620a
+   ```
+
 ## Getting Started
 
 1. `git submodule init`
@@ -25,24 +41,28 @@ To check if they are setup correctly:
 
 1. Docker Compose
 
-    ```bash
-    $ docker-compose ps
-         Name                    Command              State            Ports
-    ---------------------------------------------------------------------------------
-    Chapter-Website   yarn start                      Up      0.0.0.0:4200->4200/tcp
-    Half-Dome         yarn start                      Up      0.0.0.0:4201->4201/tcp
-    postgres          docker-entrypoint.sh postgres   Up      0.0.0.0:35432->5432/tcp
-    ```
+   ```bash
+   $ docker-compose ps
+        Name                    Command              State            Ports
+   ---------------------------------------------------------------------------------
+   Chapter-Website   docker-entrypoint.sh yarn  ...   Up      0.0.0.0:4200->4200/tcp
+   Half-Dome         docker-entrypoint.sh yarn  ...   Up      0.0.0.0:4201->4201/tcp
+   Tuolumne          docker-php-entrypoint php  ...   Up      0.0.0.0:4202->4202/tcp
+   pgadmin           /entrypoint.sh                   Up      443/tcp, 0.0.0.0:8080->80/tcp
+   postgres          docker-entrypoint.sh postgres    Up      0.0.0.0:35432->5432/tcp
+   ```
 
 2. Docker
 
-    ```bash
-    $ docker ps
-    CONTAINER ID        IMAGE                  COMMAND                  CREATED              STATUS              PORTS                     NAMES
-    87f43900d759        chapter-website:v0.1   "yarn start"             About a minute ago   Up About a minute   0.0.0.0:4200->4200/tcp    Chapter-Website
-    d4b918fab0bc        half-dome:v1.1         "yarn start"             About a minute ago   Up About a minute   0.0.0.0:4201->4201/tcp    Half-Dome
-    f7b512d5f823        postgres:12.2-alpine   "docker-entrypoint.s…"   About a minute ago   Up About a minute   0.0.0.0:35432->5432/tcp   postgres
-    ```
+   ```bash
+   $ docker ps
+   CONTAINER ID        IMAGE                  COMMAND                  CREATED             STATUS              PORTS                           NAMES
+   bcdd8cab6353        chapter-website:v0.1   "docker-entrypoint.s…"   3 minutes ago       Up 3 minutes        0.0.0.0:4200->4200/tcp          Chapter-Website
+   29ace3f0ea26        tuolumne:v1.0          "docker-php-entrypoi…"   21 minutes ago      Up 21 minutes       0.0.0.0:4202->4202/tcp          Tuolumne
+   36a54a443c24        half-dome:v1.1         "docker-entrypoint.s…"   21 minutes ago      Up 21 minutes       0.0.0.0:4201->4201/tcp          Half-Dome
+   2b7e5a24c88a        dpage/pgadmin4         "/entrypoint.sh"         21 minutes ago      Up 21 minutes       443/tcp, 0.0.0.0:8080->80/tcp   pgadmin
+   2d3f4c37df54        postgres:12.2-alpine   "docker-entrypoint.s…"   21 minutes ago      Up 21 minutes       0.0.0.0:35432->5432/tcp         postgres
+   ```
 
 ### Debugging Issues
 
@@ -50,41 +70,47 @@ To check if they are setup correctly:
 
 1. Recreate Containers
 
-    ```bash
-    $ docker-compose up --force-recreate
-    Recreating postgres ... done
-    Recreating Half-Dome ... done
-    Recreating Chapter-Website ... done
-    Attaching to postgres, Half-Dome, Chapter-Website
-    ...
-    ```
+   ```bash
+   $ docker-compose up -d --force-recreate
+   Recreating pgadmin         ... done
+   Recreating postgres        ... done
+   Recreating Half-Dome       ... done
+   Recreating Tuolumne        ... done
+   Recreating Chapter-Website ... done
+   Attaching to postgres, Half-Dome, Chapter-Website
+   ...
+   ```
 
 2. Rebuild Containers
 
-    ```bash
-    $ docker-compose up --build
-    Building half-dome
-    ...
-    Successfully built ce4b7e44d100
-    Successfully tagged docker_half-dome:latest
-    Building chapter-website
-    ...
-    Successfully built 6955801be2ec
-    Successfully tagged docker_chapter-website:latest
-    Starting postgres ... done
-    Recreating Half-Dome ... done
-    Recreating Chapter-Website ... done
-    Attaching to postgres, Half-Dome, Chapter-Website
-    ```
+   ```bash
+   $ docker-compose up -d --build
+   Building half-dome
+   ...
+   Successfully built ce4b7e44d100
+   Successfully tagged docker_half-dome:latest
+   Building chapter-website
+   ...
+   Successfully built 6955801be2ec
+   Successfully tagged docker_chapter-website:latest
+   Starting postgres ... done
+   Recreating Half-Dome ... done
+   Recreating Chapter-Website ... done
+   Attaching to postgres, Half-Dome, Chapter-Website
+   ```
+
+   > Rebuilding a specific container run `docker-compose up -d --force-recreate --build --no-deps <service-name>`
 
 3. netstat
 
-    ```bash
-    $ netstat -lna | grep '4200\|4201\|35432'
-    tcp46      0      0  *.4200                 *.*                    LISTEN
-    tcp46      0      0  *.4201                 *.*                    LISTEN
-    tcp46      0      0  *.35432                *.*                    LISTEN
-    ```
+   ```bash
+   $ netstat -lna | grep '4200\|4201\|35432'
+   tcp46      0      0  *.4202                 *.*                    LISTEN
+   tcp46      0      0  *.8080                 *.*                    LISTEN
+   tcp46      0      0  *.4200                 *.*                    LISTEN
+   tcp46      0      0  *.4201                 *.*                    LISTEN
+   tcp46      0      0  *.35432                *.*                    LISTEN
+   ```
 
 #### Manually Checking the Postgres Database
 

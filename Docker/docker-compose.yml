@@ -19,6 +19,8 @@ services:
   pgadmin:
     container_name: pgadmin
     image: dpage/pgadmin4
+    depends_on: 
+      - database
     environment:
       PGADMIN_DEFAULT_EMAIL: "acm@ucmerced.edu"
       PGADMIN_DEFAULT_PASSWORD: "PgAdmin2020!"
@@ -37,6 +39,7 @@ services:
       dockerfile: Dockerfile
     depends_on:
       - half-dome
+      - tuolumne
     ports: 
       - target: 4200 # the port inside the container
         published: 4200 # the publicly exposed port
