@@ -92,5 +92,29 @@ services:
         protocol: tcp # the port protocol (tcp or udp)
         mode: bridge # bridge networks are used to connect multiple containers together
 
+  tenaya:
+    container_name: Tenaya
+    image: tenaya:v1.0
+    restart: unless-stopped
+    build:
+      context: ../Tenaya
+      dockerfile: Dockerfile
+    env_file: 
+      - ../Tenaya/.env
+    depends_on:
+      - database
+    environment: 
+      DB_HOST: host.docker.internal
+      DB_PORT: 35432
+      DB_DATABASE: acm
+      DB_USER: docker
+      DB_PASSWORD: docker
+      PORT: 4203
+    ports: 
+      - target: 4203 # the port inside the container
+        published: 4203 # the publicly exposed port
+        protocol: tcp # the port protocol (tcp or udp)
+        mode: bridge # bridge networks are used to connect multiple containers together
+
 volumes:
   database-data: # named volumes can be managed easier using docker-compose
