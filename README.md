@@ -35,7 +35,7 @@ Below is a list of possible combinations to run the ACM Website locally
 1. Run the root yaml compose file `docker-compose up -d`
 2. To create all tables to store data on run the bash script with this command `chmod +x database_setup.sh && ./database_setup.sh`
 
-> Note: When running the project this way all applications opens on `http://127.0.0.1:<portNumber>`
+> Note: When running the project this way all applications opens on `http://localhost:<portNumber>`
 
 To check if they are setup correctly:
 
@@ -48,6 +48,7 @@ To check if they are setup correctly:
    Chapter-Website   docker-entrypoint.sh yarn  ...   Up      0.0.0.0:4200->4200/tcp
    Half-Dome         docker-entrypoint.sh yarn  ...   Up      0.0.0.0:4201->4201/tcp
    Tuolumne          docker-php-entrypoint php  ...   Up      0.0.0.0:4202->4202/tcp
+   Tenaya            go run main.go                   Up      0.0.0.0:4203->4203/tcp
    pgadmin           /entrypoint.sh                   Up      443/tcp, 0.0.0.0:8080->80/tcp
    postgres          docker-entrypoint.sh postgres    Up      0.0.0.0:35432->5432/tcp
    ```
@@ -56,12 +57,13 @@ To check if they are setup correctly:
 
    ```bash
    $ docker ps
-   CONTAINER ID        IMAGE                  COMMAND                  CREATED             STATUS              PORTS                           NAMES
-   bcdd8cab6353        chapter-website:v0.1   "docker-entrypoint.s…"   3 minutes ago       Up 3 minutes        0.0.0.0:4200->4200/tcp          Chapter-Website
-   29ace3f0ea26        tuolumne:v1.0          "docker-php-entrypoi…"   21 minutes ago      Up 21 minutes       0.0.0.0:4202->4202/tcp          Tuolumne
-   36a54a443c24        half-dome:v1.1         "docker-entrypoint.s…"   21 minutes ago      Up 21 minutes       0.0.0.0:4201->4201/tcp          Half-Dome
-   2b7e5a24c88a        dpage/pgadmin4         "/entrypoint.sh"         21 minutes ago      Up 21 minutes       443/tcp, 0.0.0.0:8080->80/tcp   pgadmin
-   2d3f4c37df54        postgres:12.2-alpine   "docker-entrypoint.s…"   21 minutes ago      Up 21 minutes       0.0.0.0:35432->5432/tcp         postgres
+   CONTAINER ID        IMAGE                  COMMAND                  CREATED             STATUS             PORTS                           NAMES
+   bcdd8cab6353        chapter-website:v0.1   "docker-entrypoint.s…"   3 minutes ago       Up 3 minutes       0.0.0.0:4200->4200/tcp          Chapter-Website
+   36a54a443c24        half-dome:v1.1         "docker-entrypoint.s…"   3 minutes ago       Up 3 minutes       0.0.0.0:4201->4201/tcp          Half-Dome
+   29ace3f0ea26        tuolumne:v1.0          "docker-php-entrypoi…"   3 minutes ago       Up 3 minutes       0.0.0.0:4202->4202/tcp          Tuolumne
+   f970a1f44851        tenaya:v1.0            "go run main.go"         3 minutes ago       Up 3 minutes       0.0.0.0:4203->4203/tcp          Tenaya
+   2b7e5a24c88a        dpage/pgadmin4         "/entrypoint.sh"         3 minutes ago       Up 3 minutes       443/tcp, 0.0.0.0:8080->80/tcp   pgadmin
+   2d3f4c37df54        postgres:12.2-alpine   "docker-entrypoint.s…"   3 minutes ago       Up 3 minutes       0.0.0.0:35432->5432/tcp         postgres
    ```
 
 ### Debugging Issues
@@ -76,8 +78,9 @@ To check if they are setup correctly:
    Recreating postgres        ... done
    Recreating Half-Dome       ... done
    Recreating Tuolumne        ... done
+   Recreating Tenaya          ... done
    Recreating Chapter-Website ... done
-   Attaching to postgres, Half-Dome, Chapter-Website
+   Attaching to pgadmin, postgres, Half-Dome, Toulumne, Tenaya, Chapter-Website
    ...
    ```
 
@@ -104,11 +107,12 @@ To check if they are setup correctly:
 3. netstat
 
    ```bash
-   $ netstat -lna | grep '4200\|4201\|35432'
-   tcp46      0      0  *.4202                 *.*                    LISTEN
-   tcp46      0      0  *.8080                 *.*                    LISTEN
+   $ netstat -lna | grep '4200\|4201\|4202\|4203\|8080\|35432'
    tcp46      0      0  *.4200                 *.*                    LISTEN
    tcp46      0      0  *.4201                 *.*                    LISTEN
+   tcp46      0      0  *.4202                 *.*                    LISTEN
+   tcp46      0      0  *.4203                 *.*                    LISTEN
+   tcp46      0      0  *.8080                 *.*                    LISTEN
    tcp46      0      0  *.35432                *.*                    LISTEN
    ```
 
