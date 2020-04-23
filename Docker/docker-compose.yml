@@ -2,7 +2,7 @@ version: "3.7"
 
 services:
 
-  database:
+  postgres:
     container_name: postgres
     image: postgres:12.2-alpine # use official postgres version 12.2
     restart: unless-stopped
@@ -20,7 +20,7 @@ services:
     container_name: pgadmin
     image: dpage/pgadmin4
     depends_on: 
-      - database
+      - postgres
     environment:
       PGADMIN_DEFAULT_EMAIL: "acm@ucmerced.edu"
       PGADMIN_DEFAULT_PASSWORD: "PgAdmin2020!"
@@ -32,7 +32,7 @@ services:
 
   chapter-website:
     container_name: Chapter-Website
-    image: chapter-website:v0.1
+    image: chapter-website:v0.1.2
     restart: unless-stopped
     build:
       context: ../Chapter-Website
@@ -40,6 +40,7 @@ services:
     depends_on:
       - half-dome
       - tuolumne
+      - tenaya
     ports: 
       - target: 4200 # the port inside the container
         published: 4200 # the publicly exposed port
@@ -56,7 +57,8 @@ services:
     env_file: 
       - ../Half-Dome/.env
     depends_on:
-      - database
+      - postgres
+      - pgadmin
     environment: 
       POSTGRES_HOST: host.docker.internal
       POSTGRES_PORT: 35432
@@ -79,7 +81,8 @@ services:
     env_file: 
       - ../Tuolumne/.env
     depends_on:
-      - database
+      - postgres
+      - pgadmin
     environment: 
       DB_HOST: host.docker.internal
       DB_PORT: 35432
@@ -102,7 +105,8 @@ services:
     env_file: 
       - ../Tenaya/.env
     depends_on:
-      - database
+      - postgres
+      - pgadmin
     environment: 
       DB_HOST: host.docker.internal
       DB_PORT: 35432
