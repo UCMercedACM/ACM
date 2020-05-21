@@ -32,7 +32,7 @@ Below is a list of possible combinations to run the ACM Website locally
 
 ### Website with all API Services
 
-1. Run the root yaml compose file `docker-compose up -d`
+1. Run the root yaml compose file `docker-compose -p "ACM Chapter Website" up -d`
 2. To create all tables to store data on run the bash script with this command `chmod +x database_setup.sh && ./database_setup.sh`
 
 > Note: When running the project this way all applications opens on `http://localhost:<portNumber>`
@@ -102,7 +102,8 @@ To check if they are setup correctly:
    Attaching to postgres, Half-Dome, Chapter-Website
    ```
 
-   > Rebuilding a specific container run `docker-compose up -d --force-recreate --build --no-deps <service-name>`
+   > Rebuilding a specific container: `docker-compose -p "ACM Chapter Website" up -d --build --no-deps <service-name>`
+   > Reinstalling dependencies of a specific container: `docker-compose -p "ACM Chapter Website" up -d --build --no-deps --force-recreate <service-name>`
 
 3. netstat
 
@@ -118,7 +119,15 @@ To check if they are setup correctly:
 
 #### Manually Checking the Postgres Database
 
+##### Via Commnad Line
+
 Run `docker exec -it postgres psql -U docker acm` after you have started up any of the compose files to sift through the database.
+
+##### Via Browser
+
+Open `localhost:8080` and punch in the *email* and *password*
+
+> Note: if running this locally the default email is **acm@ucmerced.edu** and the default password is **PgAdmin2020!**
 
 #### Cleaning Up When Done Developing or Trying to Reset Your Environment
 

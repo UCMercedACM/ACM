@@ -2,6 +2,7 @@ version: "3.7"
 
 services:
 
+  # Database
   postgres:
     container_name: postgres
     image: postgres:12.2-alpine # use official postgres version 12.2
@@ -16,6 +17,7 @@ services:
         protocol: tcp # the port protocol (tcp or udp)
         mode: bridge # bridge networks are used to connect multiple containers together
   
+  # Database Administration Tool
   pgadmin:
     container_name: pgadmin
     image: dpage/pgadmin4
@@ -30,6 +32,7 @@ services:
         protocol: tcp # the port protocol (tcp or udp)
         mode: bridge # bridge networks are used to connect multiple containers together
 
+  # Website written in Angular
   chapter-website:
     container_name: Chapter-Website
     image: chapter-website:v0.1.2
@@ -47,6 +50,7 @@ services:
         protocol: tcp # the port protocol (tcp or udp)
         mode: bridge # bridge networks are used to connect multiple containers together
 
+  # Member Management API written in Nodejs
   half-dome:
     container_name: Half-Dome
     image: half-dome:v1.1
@@ -71,6 +75,7 @@ services:
         protocol: tcp # the port protocol (tcp or udp)
         mode: bridge # bridge networks are used to connect multiple containers together
   
+  # Workshop Management API written in PHP
   tuolumne:
     container_name: Tuolumne
     image: tuolumne:v1.0
@@ -95,6 +100,7 @@ services:
         protocol: tcp # the port protocol (tcp or udp)
         mode: bridge # bridge networks are used to connect multiple containers together
 
+  # Events Management API written in Golang
   tenaya:
     container_name: Tenaya
     image: tenaya:v1.0
