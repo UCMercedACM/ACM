@@ -35,7 +35,7 @@ services:
   # Website written in Angular
   chapter-website:
     container_name: Chapter-Website
-    image: chapter-website:v0.1.2
+    image: chapter-website:v0.3.0
     restart: unless-stopped
     build:
       context: ../Chapter-Website
@@ -53,7 +53,7 @@ services:
   # Member Management API written in Nodejs
   half-dome:
     container_name: Half-Dome
-    image: half-dome:v1.1
+    image: half-dome:v0.2.7
     restart: unless-stopped
     build:
       context: ../Half-Dome
