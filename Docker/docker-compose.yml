@@ -126,6 +126,7 @@ services:
               mode: bridge # bridge networks are used to connect multiple containers together
 
     elasticsearch:
+        container_name: Elasticsearch
         build:
             context: ../elasticsearch/
             args:
@@ -151,6 +152,7 @@ services:
             - elk
 
     logstash:
+        container_name: Logstash
         build:
             context: ../logstash/
             args:
@@ -176,6 +178,7 @@ services:
             - elasticsearch
 
     kibana:
+        container_name: Kibana
         build:
             context: ../kibana/
             args:
@@ -193,6 +196,7 @@ services:
             - elasticsearch
 
     apm-server:
+        container_name: APM_Server
         build:
             context: ../apm-server/
             args:
@@ -214,6 +218,7 @@ services:
             - elasticsearch
 
     enterprise-search:
+        container_name: Enterprise_Search
         build:
             context: ../enterprise-search/
             args:
@@ -234,6 +239,7 @@ services:
             - elasticsearch
 
     logspout:
+        container_name: Logspout
         build:
             context: ../logspout
         volumes:
@@ -248,6 +254,7 @@ services:
         restart: on-failure
 
     curator:
+        container_name: Curator
         build:
             context: ../curator/
         environment:
