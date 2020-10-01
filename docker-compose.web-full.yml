@@ -8,8 +8,13 @@ services:
         restart: unless-stopped
         volumes:
             - database-data:/var/lib/postgresql/data/ # persist data even if container shuts down
-        env_file:
-            - database.env
+        environment:
+            POSTGRES_USER: docker
+            POSTGRES_PASSWORD: docker
+            POSTGRES_DB: acm
+            POSTGRES_HOST: localhost
+            POSTGRES_PORT: 5432
+            PGDATA: /var/lib/postgresql/data/
         ports:
             - target: 5432 # the port inside the container
               published: 35432 # the publicly exposed port
@@ -37,8 +42,10 @@ services:
         image: chapter-website:v0.3.0
         restart: unless-stopped
         build:
-            context: ../Chapter-Website
+            context: ./Chapter-Website
             dockerfile: Dockerfile
+        environment: 
+            NODE_ENV: developement
         depends_on:
             - half-dome
             - tuolumne
@@ -55,10 +62,10 @@ services:
         image: half-dome:v0.2.7
         restart: unless-stopped
         build:
-            context: ../Half-Dome
+            context: ./Half-Dome
             dockerfile: Dockerfile
         env_file:
-            - ../Half-Dome/.env
+            - ./Half-Dome/.env
         depends_on:
             - postgres
             - pgadmin
@@ -80,10 +87,10 @@ services:
         image: tuolumne:v1.0
         restart: unless-stopped
         build:
-            context: ../Tuolumne
+            context: ./Tuolumne
             dockerfile: Dockerfile
         env_file:
-            - ../Tuolumne/.env
+            - ./Tuolumne/.env
         depends_on:
             - postgres
             - pgadmin
@@ -105,10 +112,10 @@ services:
         image: tenaya:v1.0
         restart: unless-stopped
         build:
-            context: ../Tenaya
+            context: ./Tenaya
             dockerfile: Dockerfile
         env_file:
-            - ../Tenaya/.env
+            - ./Tenaya/.env
         depends_on:
             - postgres
             - pgadmin

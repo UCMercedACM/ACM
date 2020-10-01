@@ -8,8 +8,13 @@ services:
         restart: unless-stopped
         volumes:
             - database-data:/var/lib/postgresql/data/ # persist data even if container shuts down
-        env_file:
-            - database.env
+        environment:
+            POSTGRES_USER: docker
+            POSTGRES_PASSWORD: docker
+            POSTGRES_DB: acm
+            POSTGRES_HOST: localhost
+            POSTGRES_PORT: 5432
+            PGDATA: /var/lib/postgresql/data/
         ports:
             - target: 5432 # the port inside the container
               published: 35432 # the publicly exposed port
@@ -37,7 +42,7 @@ services:
         image: chapter-website:v0.3.0
         restart: unless-stopped
         build:
-            context: ../Chapter-Website
+            context: ./Chapter-Website
             dockerfile: Dockerfile
         depends_on:
             - half-dome
@@ -55,10 +60,10 @@ services:
         image: half-dome:v0.2.7
         restart: unless-stopped
         build:
-            context: ../Half-Dome
+            context: ./Half-Dome
             dockerfile: Dockerfile
         env_file:
-            - ../Half-Dome/.env
+            - ./Half-Dome/.env
         depends_on:
             - postgres
             - pgadmin
@@ -80,10 +85,10 @@ services:
         image: tuolumne:v1.0
         restart: unless-stopped
         build:
-            context: ../Tuolumne
+            context: ./Tuolumne
             dockerfile: Dockerfile
         env_file:
-            - ../Tuolumne/.env
+            - ./Tuolumne/.env
         depends_on:
             - postgres
             - pgadmin
@@ -105,10 +110,10 @@ services:
         image: tenaya:v1.0
         restart: unless-stopped
         build:
-            context: ../Tenaya
+            context: ./Tenaya
             dockerfile: Dockerfile
         env_file:
-            - ../Tenaya/.env
+            - ./Tenaya/.env
         depends_on:
             - postgres
             - pgadmin
@@ -128,22 +133,29 @@ services:
     elasticsearch:
         container_name: Elasticsearch
         build:
-            context: ../elasticsearch/
+            context: ./elasticsearch/
             args:
                 ELK_VERSION: $ELK_VERSION
         volumes:
             - type: bind
-              source: ../elasticsearch/config/elasticsearch.yml
+              source: ./elasticsearch/config/elasticsearch.yml
               target: /usr/share/elasticsearch/config/elasticsearch.yml
               read_only: true
             - type: volume
               source: elasticsearch
               target: /usr/share/elasticsearch/data
         ports:
-            - "9200:9200"
-            - "9300:9300"
+            - target: 9200 # the port inside the container
+              published: 9200 # the publicly exposed port
+              protocol: tcp # the port protocol (tcp or udp)
+              mode: bridge # bridge networks are used to connect multiple containers together
+            - target: 9300 # the port inside the container
+              published: 9300 # the publicly exposed port
+              protocol: tcp # the port protocol (tcp or udp)
+              mode: bridge # bridge networks are used to connect multiple containers together
         environment:
             ES_JAVA_OPTS: "-Xmx256m -Xms256m"
+            ELASTIC_USERNAME: root
             ELASTIC_PASSWORD: changeme
             # Use single node discovery in order to disable production mode and avoid bootstrap checks
             # see https://www.elastic.co/guide/en/elasticsearch/reference/current/bootstrap-checks.html
@@ -154,22 +166,31 @@ services:
     logstash:
         container_name: Logstash
         build:
-            context: ../logstash/
+            context: ./logstash/
             args:
                 ELK_VERSION: $ELK_VERSION
         volumes:
             - type: bind
-              source: ../logstash/config/logstash.yml
+              source: ./logstash/config/logstash.yml
               target: /usr/share/logstash/config/logstash.yml
               read_only: true
             - type: bind
-              source: ../logstash/pipeline
+              source: ./logstash/pipeline
               target: /usr/share/logstash/pipeline
               read_only: true
         ports:
-            - "5000:5000/tcp"
-            - "5000:5000/udp"
-            - "9600:9600"
+            - target: 5000 # the port inside the container
+              published: 5000 # the publicly exposed port
+              protocol: tcp # the port protocol (tcp or udp)
+              mode: bridge # bridge networks are used to connect multiple containers together
+            - target: 5000 # the port inside the container
+              published: 5000 # the publicly exposed port
+              protocol: udp # the port protocol (tcp or udp)
+              mode: bridge # bridge networks are used to connect multiple containers together
+            - target: 9600 # the port inside the container
+              published: 9600 # the publicly exposed port
+              protocol: tcp # the port protocol (tcp or udp)
+              mode: bridge # bridge networks are used to connect multiple containers together
         environment:
             LS_JAVA_OPTS: "-Xmx256m -Xms256m"
         networks:
@@ -180,16 +201,19 @@ services:
     kibana:
         container_name: Kibana
         build:
-            context: ../kibana/
+            context: ./kibana/
             args:
                 ELK_VERSION: $ELK_VERSION
         volumes:
             - type: bind
-              source: ../kibana/config/kibana.yml
+              source: ./kibana/config/kibana.yml
               target: /usr/share/kibana/config/kibana.yml
               read_only: true
         ports:
-            - "5601:5601"
+            - target: 5601 # the port inside the container
+              published: 5601 # the publicly exposed port
+              protocol: tcp # the port protocol (tcp or udp)
+              mode: bridge # bridge networks are used to connect multiple containers together
         networks:
             - elk
         depends_on:
@@ -198,7 +222,7 @@ services:
     apm-server:
         container_name: APM_Server
         build:
-            context: ../apm-server/
+            context: ./apm-server/
             args:
                 ELK_VERSION: $ELK_VERSION
         command:
@@ -207,62 +231,14 @@ services:
             - --strict.perms=false
         volumes:
             - type: bind
-              source: ../apm-server/config/apm-server.yml
+              source: ./apm-server/config/apm-server.yml
               target: /usr/share/apm-server/apm-server.yml
               read_only: true
         ports:
-            - "8200:8200"
-        networks:
-            - elk
-        depends_on:
-            - elasticsearch
-
-    enterprise-search:
-        container_name: Enterprise_Search
-        build:
-            context: ../enterprise-search/
-            args:
-                ELK_VERSION: $ELK_VERSION
-        volumes:
-            - type: bind
-              source: ../enterprise-search/config/enterprise-search.yml
-              target: /usr/share/enterprise-search/config/enterprise-search.yml
-              read_only: true
-        environment:
-            JAVA_OPTS: -Xmx2g -Xms2g
-            ENT_SEARCH_DEFAULT_PASSWORD: changeme
-        ports:
-            - "3002:3002"
-        networks:
-            - elk
-        depends_on:
-            - elasticsearch
-
-    logspout:
-        container_name: Logspout
-        build:
-            context: ../logspout
-        volumes:
-            - /var/run/docker.sock:/var/run/docker.sock:ro
-        environment:
-            ROUTE_URIS: logstash://logstash:5000
-            LOGSTASH_TAGS: docker-elk
-        networks:
-            - elk
-        depends_on:
-            - logstash
-        restart: on-failure
-
-    curator:
-        container_name: Curator
-        build:
-            context: ../curator/
-        environment:
-            ELASTICSEARCH_HOST: elasticsearch
-            CRON: 0 0 * * *
-            CONFIG_FILE: /usr/share/curator/config/curator.yml
-            COMMAND: /usr/share/curator/config/delete_log_files_curator.yml
-            UNIT_COUNT: 2
+            - target: 8200 # the port inside the container
+              published: 8200 # the publicly exposed port
+              protocol: tcp # the port protocol (tcp or udp)
+              mode: bridge # bridge networks are used to connect multiple containers together
         networks:
             - elk
         depends_on:
