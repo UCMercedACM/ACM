@@ -1,0 +1,192 @@
+version: "3.7"
+
+services:
+    # Database
+    postgres:
+        container_name: postgres
+        image: postgres:12.2-alpine # use official postgres version 12.2
+        restart: unless-stopped
+        volumes:
+            - database-data:/var/lib/postgresql/data/ # persist data even if container shuts down
+        environment:
+            POSTGRES_USER: docker
+            POSTGRES_PASSWORD: docker
+            POSTGRES_DB: acm
+            POSTGRES_HOST: localhost
+            POSTGRES_PORT: 5432
+            PGDATA: /var/lib/postgresql/data/
+        ports:
+            - target: 5432 # the port inside the container
+              published: 35432 # the publicly exposed port
+              protocol: tcp # the port protocol (tcp or udp)
+              mode: bridge # bridge networks are used to connect multiple containers together
+
+    # Database Administration Tool
+    pgadmin:
+        container_name: pgadmin
+        image: dpage/pgadmin4
+        depends_on:
+            - postgres
+        environment:
+            PGADMIN_DEFAULT_EMAIL: "acm@ucmerced.edu"
+            PGADMIN_DEFAULT_PASSWORD: "PgAdmin2020!"
+        ports:
+            - target: 80 # the port inside the container
+              published: 8080 # the publicly exposed port
+              protocol: tcp # the port protocol (tcp or udp)
+              mode: bridge # bridge networks are used to connect multiple containers together
+
+    # Website written in Angular
+    chapter-website:
+        container_name: Chapter-Website
+        image: chapter-website:v0.3.0
+        restart: unless-stopped
+        build:
+            context: ../Chapter-Website
+            dockerfile: Dockerfile
+        depends_on:
+            - half-dome
+            - tuolumne
+            - tenaya
+        ports:
+            - target: 4200 # the port inside the container
+              published: 4200 # the publicly exposed port
+              protocol: tcp # the port protocol (tcp or udp)
+              mode: bridge # bridge networks are used to connect multiple containers together
+
+    # Member Management API written in Nodejs
+    half-dome:
+        container_name: Half-Dome
+        image: half-dome:v0.2.7
+        restart: unless-stopped
+        build:
+            context: ../Half-Dome
+            dockerfile: Dockerfile
+        env_file:
+            - ../Half-Dome/.env
+        depends_on:
+            - postgres
+            - pgadmin
+        environment:
+            POSTGRES_HOST: host.docker.internal
+            POSTGRES_PORT: 35432
+            POSTGRES_DB: acm
+            POSTGRES_USER: docker
+            POSTGRES_PASSWORD: docker
+        ports:
+            - target: 4201 # the port inside the container
+              published: 4201 # the publicly exposed port
+              protocol: tcp # the port protocol (tcp or udp)
+              mode: bridge # bridge networks are used to connect multiple containers together
+
+    # Workshop Management API written in PHP
+    tuolumne:
+        container_name: Tuolumne
+        image: tuolumne:v1.0
+        restart: unless-stopped
+        build:
+            context: ../Tuolumne
+            dockerfile: Dockerfile
+        env_file:
+            - ../Tuolumne/.env
+        depends_on:
+            - postgres
+            - pgadmin
+        environment:
+            DB_HOST: host.docker.internal
+            DB_PORT: 35432
+            DB_DATABASE: acm
+            DB_USERNAME: docker
+            DB_PASSWORD: docker
+        ports:
+            - target: 4202 # the port inside the container
+              published: 4202 # the publicly exposed port
+              protocol: tcp # the port protocol (tcp or udp)
+              mode: bridge # bridge networks are used to connect multiple containers together
+
+    # Events Management API written in Golang
+    tenaya:
+        container_name: Tenaya
+        image: tenaya:v1.0
+        restart: unless-stopped
+        build:
+            context: ../Tenaya
+            dockerfile: Dockerfile
+        env_file:
+            - ../Tenaya/.env
+        depends_on:
+            - postgres
+            - pgadmin
+        environment:
+            DB_HOST: host.docker.internal
+            DB_PORT: 35432
+            DB_DATABASE: acm
+            DB_USER: docker
+            DB_PASSWORD: docker
+            PORT: 4203
+        ports:
+            - target: 4203 # the port inside the container
+              published: 4203 # the publicly exposed port
+              protocol: tcp # the port protocol (tcp or udp)
+              mode: bridge # bridge networks are used to connect multiple containers together
+
+    prometheus:
+        image: prom/prometheus:latest
+        container_name: monitoring_prometheus
+        restart: unless-stopped
+        volumes:
+            - ../prometheus/config:/etc/prometheus/
+            - ../prometheus/data:/prometheus
+        command:
+            - '--config.file=/etc/prometheus/prometheus.yml'
+            - '--storage.local.path=/prometheus'
+        expose:
+            - 9090
+        ports:
+            - target: 9090 # the port inside the container
+              published: 9090 # the publicly exposed port
+              protocol: tcp # the port protocol (tcp or udp)
+              mode: bridge # bridge networks are used to connect multiple containers together
+        links:
+            - cadvisor:cadvisor
+            - node-exporter:node-exporter
+
+    node-exporter:
+        image: prom/node-exporter:latest
+        container_name: monitoring_node_exporter
+        restart: unless-stopped
+        expose:
+            - 9100
+
+    cadvisor:
+        image: google/cadvisor:latest
+        container_name: monitoring_cadvisor
+        restart: unless-stopped
+        volumes:
+            - /:/rootfs:ro
+            - /var/run:/var/run:rw
+            - /sys:/sys:ro
+            - /var/lib/docker/:/var/lib/docker:ro
+        expose:
+            - 8080
+  
+    grafana:
+        image: grafana/grafana:latest
+        container_name: monitoring_grafana
+        restart: unless-stopped
+        links:
+            - prometheus:prometheus
+        volumes:
+            - ../grafana:/var/lib/grafana
+        environment:
+            - GF_SECURITY_ADMIN_PASSWORD=MYPASSWORT
+            - GF_USERS_ALLOW_SIGN_UP=false
+            - GF_SERVER_DOMAIN=myrul.com
+            - GF_SMTP_ENABLED=true
+            - GF_SMTP_HOST=smtp.gmail.com:587
+            - GF_SMTP_USER=myadrress@gmail.com
+            - GF_SMTP_PASSWORD=mypassword
+            - GF_SMTP_FROM_ADDRESS=myaddress@gmail.com
+
+volumes:
+    database-data: # named volumes can be managed easier using docker-compose
