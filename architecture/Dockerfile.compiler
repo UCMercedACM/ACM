@@ -1,0 +1,10 @@
+FROM alpine:3.10
+
+LABEL maintainer="UCM ACM Chapter"
+LABEL maintainer.email="acm@ucmerced.edu"
+
+RUN apk add --update --no-cache graphviz ttf-dejavu \
+  && addgroup -g 1000 dot \
+  && adduser -u 1000 -G dot -s /bin/sh -D dot
+
+USER 1000
