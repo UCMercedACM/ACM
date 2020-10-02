@@ -8,8 +8,13 @@ services:
         restart: unless-stopped
         volumes:
             - database-data:/var/lib/postgresql/data/ # persist data even if container shuts down
-        env_file:
-            - database.env
+        environment:
+            POSTGRES_USER: docker
+            POSTGRES_PASSWORD: docker
+            POSTGRES_DB: acm
+            POSTGRES_HOST: localhost
+            POSTGRES_PORT: 5432
+            PGDATA: /var/lib/postgresql/data/
         ports:
             - target: 5432 # the port inside the container
               published: 35432 # the publicly exposed port
