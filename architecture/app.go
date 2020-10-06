@@ -7,7 +7,7 @@ import (
 	"github.com/blushft/go-diagrams/nodes/gcp"
 )
 
-func main() {
+func app() {
 	d, err := diagram.New(diagram.Filename("app"), diagram.Label("App"), diagram.Direction("LR"))
 	if err != nil {
 		log.Fatal(err)

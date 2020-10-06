@@ -8,14 +8,14 @@ digraph root {
 	rankdir=LR;
 	ranksep=0.75;
 	splines=ortho;
-	pecjlbhp->wfzvncus[ color="#7B8894", dir=forward, fontcolor="#2D3436", fontname="Sans-Serif", fontsize=13 ];
-	wfzvncus->ouaenzgu[ color="#7B8894", dir=forward, fontcolor="#2D3436", fontname="Sans-Serif", fontsize=13 ];
-	wfzvncus->bvznogds[ color="#7B8894", dir=forward, fontcolor="#2D3436", fontname="Sans-Serif", fontsize=13 ];
-	wfzvncus->upphhxjb[ color="#7B8894", dir=forward, fontcolor="#2D3436", fontname="Sans-Serif", fontsize=13 ];
-	upphhxjb->eeeubgcd[ color="#7B8894", dir=forward, fontcolor="#2D3436", fontname="Sans-Serif", fontsize=13 ];
-	ouaenzgu->eeeubgcd[ color="#7B8894", dir=forward, fontcolor="#2D3436", fontname="Sans-Serif", fontsize=13 ];
-	bvznogds->eeeubgcd[ color="#7B8894", dir=forward, fontcolor="#2D3436", fontname="Sans-Serif", fontsize=13 ];
-	eeeubgcd->ovhfpdwr[ color="#7B8894", dir=forward, fontcolor="#2D3436", fontname="Sans-Serif", fontsize=13 ];
+	yqunomhe->tqcblegc[ color="#7B8894", dir=forward, fontcolor="#2D3436", fontname="Sans-Serif", fontsize=13 ];
+	cxebssge->qbegqfzi[ color="#7B8894", dir=forward, fontcolor="#2D3436", fontname="Sans-Serif", fontsize=13 ];
+	hfelevzo->cxebssge[ color="#7B8894", dir=forward, fontcolor="#2D3436", fontname="Sans-Serif", fontsize=13 ];
+	xrrcievy->cxebssge[ color="#7B8894", dir=forward, fontcolor="#2D3436", fontname="Sans-Serif", fontsize=13 ];
+	tqcblegc->hfelevzo[ color="#7B8894", dir=forward, fontcolor="#2D3436", fontname="Sans-Serif", fontsize=13 ];
+	tqcblegc->xrrcievy[ color="#7B8894", dir=forward, fontcolor="#2D3436", fontname="Sans-Serif", fontsize=13 ];
+	tqcblegc->wkyqicau[ color="#7B8894", dir=forward, fontcolor="#2D3436", fontname="Sans-Serif", fontsize=13 ];
+	wkyqicau->cxebssge[ color="#7B8894", dir=forward, fontcolor="#2D3436", fontname="Sans-Serif", fontsize=13 ];
 	subgraph cluster_GCP {
 	bgcolor="#E5F5FD";
 	fontcolor="#2D3436";
@@ -35,8 +35,8 @@ digraph root {
 	pencolor="#AEB6BE";
 	shape=box;
 	style=rounded;
-	eeeubgcd [ fixedsize=true, fontcolor="#2D3436", fontname="Sans-Serif", fontsize=13, height=1.7999999999999998, image="assets/gcp/database/memorystore.png", imagescale=true, label=Cache, labelloc=b, shape=none, style=rounded, width=1.4 ];
-	ovhfpdwr [ fixedsize=true, fontcolor="#2D3436", fontname="Sans-Serif", fontsize=13, height=1.7999999999999998, image="assets/gcp/database/sql.png", imagescale=true, label=Database, labelloc=b, shape=none, style=rounded, width=1.4 ];
+	cxebssge [ fixedsize=true, fontcolor="#2D3436", fontname="Sans-Serif", fontsize=13, height=1.7999999999999998, image="assets/gcp/database/memorystore.png", imagescale=true, label=Cache, labelloc=b, shape=none, style=rounded, width=1.4 ];
+	qbegqfzi [ fixedsize=true, fontcolor="#2D3436", fontname="Sans-Serif", fontsize=13, height=1.7999999999999998, image="assets/gcp/database/sql.png", imagescale=true, label=Database, labelloc=b, shape=none, style=rounded, width=1.4 ];
 
 }
 ;
@@ -50,16 +50,16 @@ digraph root {
 	pencolor="#AEB6BE";
 	shape=box;
 	style=rounded;
-	bvznogds [ fixedsize=true, fontcolor="#2D3436", fontname="Sans-Serif", fontsize=13, height=1.7999999999999998, image="assets/gcp/compute/compute-engine.png", imagescale=true, label="Server 2", labelloc=b, shape=none, style=rounded, width=1.4 ];
-	ouaenzgu [ fixedsize=true, fontcolor="#2D3436", fontname="Sans-Serif", fontsize=13, height=1.7999999999999998, image="assets/gcp/compute/compute-engine.png", imagescale=true, label="Server 1", labelloc=b, shape=none, style=rounded, width=1.4 ];
-	upphhxjb [ fixedsize=true, fontcolor="#2D3436", fontname="Sans-Serif", fontsize=13, height=1.7999999999999998, image="assets/gcp/compute/compute-engine.png", imagescale=true, label="Server 3", labelloc=b, shape=none, style=rounded, width=1.4 ];
+	hfelevzo [ fixedsize=true, fontcolor="#2D3436", fontname="Sans-Serif", fontsize=13, height=1.7999999999999998, image="assets/gcp/compute/compute-engine.png", imagescale=true, label="Server 2", labelloc=b, shape=none, style=rounded, width=1.4 ];
+	wkyqicau [ fixedsize=true, fontcolor="#2D3436", fontname="Sans-Serif", fontsize=13, height=1.7999999999999998, image="assets/gcp/compute/compute-engine.png", imagescale=true, label="Server 1", labelloc=b, shape=none, style=rounded, width=1.4 ];
+	xrrcievy [ fixedsize=true, fontcolor="#2D3436", fontname="Sans-Serif", fontsize=13, height=1.7999999999999998, image="assets/gcp/compute/compute-engine.png", imagescale=true, label="Server 3", labelloc=b, shape=none, style=rounded, width=1.4 ];
 
 }
 ;
 
 }
 ;
-	pecjlbhp [ fixedsize=true, fontcolor="#2D3436", fontname="Sans-Serif", fontsize=13, height=1.7999999999999998, image="assets/gcp/network/dns.png", imagescale=true, label=DNS, labelloc=b, shape=none, style=rounded, width=1.4 ];
-	wfzvncus [ fixedsize=true, fontcolor="#2D3436", fontname="Sans-Serif", fontsize=13, height=1.7999999999999998, image="assets/gcp/network/load-balancing.png", imagescale=true, label=NLB, labelloc=b, shape=none, style=rounded, width=1.4 ];
+	tqcblegc [ fixedsize=true, fontcolor="#2D3436", fontname="Sans-Serif", fontsize=13, height=1.7999999999999998, image="assets/gcp/network/load-balancing.png", imagescale=true, label=NLB, labelloc=b, shape=none, style=rounded, width=1.4 ];
+	yqunomhe [ fixedsize=true, fontcolor="#2D3436", fontname="Sans-Serif", fontsize=13, height=1.7999999999999998, image="assets/gcp/network/dns.png", imagescale=true, label=DNS, labelloc=b, shape=none, style=rounded, width=1.4 ];
 
 }
