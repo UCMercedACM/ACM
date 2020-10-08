@@ -24,6 +24,7 @@ services:
             CGO_ENABLED: "1"
         volumes:
             - .:/go/src/app
+        command: "go run ."
 
     compiler:
         container_name: dot-compiler
@@ -36,6 +37,6 @@ services:
         volumes:
             - .:/dot
         working_dir: /dot
-        command: sh -c "cd ./go-diagrams && dot -Tpng app.dot > app.png"
+        command: sh -c "cd ./go-diagrams && dot -Tpng app.dot > ../app.png"
         depends_on:
           - diagram

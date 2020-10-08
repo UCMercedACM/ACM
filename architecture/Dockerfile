@@ -9,5 +9,3 @@ COPY . .
 
 # Install Package
 RUN go get github.com/blushft/go-diagrams
-
-CMD ["go", "run", "architecture.go"]
