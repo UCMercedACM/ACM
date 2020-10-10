@@ -1,0 +1,79 @@
+version: "3.7"
+
+services:
+    # Database
+    postgres:
+        container_name: postgres
+        image: postgres:12.2-alpine # use official postgres version 12.2
+        restart: unless-stopped
+        volumes:
+            - database-data:/var/lib/postgresql/data/ # persist data even if container shuts down
+        environment:
+            POSTGRES_USER: docker
+            POSTGRES_PASSWORD: docker
+            POSTGRES_DB: acm
+            POSTGRES_HOST: localhost
+            POSTGRES_PORT: 5432
+            PGDATA: /var/lib/postgresql/data/
+        ports:
+            - target: 5432 # the port inside the container
+              published: 35432 # the publicly exposed port
+              protocol: tcp # the port protocol (tcp or udp)
+              mode: bridge # bridge networks are used to connect multiple containers together
+
+    # Database Administration Tool
+    pgadmin:
+        container_name: pgadmin
+        image: dpage/pgadmin4
+        depends_on:
+            - postgres
+        environment:
+            PGADMIN_DEFAULT_EMAIL: "acm@ucmerced.edu"
+            PGADMIN_DEFAULT_PASSWORD: "PgAdmin2020!"
+        ports:
+            - target: 80 # the port inside the container
+              published: 8080 # the publicly exposed port
+              protocol: tcp # the port protocol (tcp or udp)
+              mode: bridge # bridge networks are used to connect multiple containers together
+              
+    # Website written in Angular
+    chapter-website:
+        container_name: Chapter-Website
+        image: chapter-website:v0.3.0
+        restart: unless-stopped
+        build:
+            context: ./Chapter-Website
+            dockerfile: Dockerfile
+        environment:
+            NODE_ENV: production
+        depends_on:
+            - cathedral
+        ports:
+            - target: 4200 # the port inside the container
+              published: 4200 # the publicly exposed port
+              protocol: tcp # the port protocol (tcp or udp)
+              mode: bridge # bridge networks are used to connect multiple containers together
+
+    cathedral:
+        container_name: cathedral
+        image: cathedral:v0.0.1
+        build:
+            context: ./Cathedral
+            dockerfile: Dockerfile
+        depends_on:
+            - postgres
+            - pgadmin
+        environment:
+            POSTGRES_HOST: host.docker.internal
+            POSTGRES_PORT: 35432
+            POSTGRES_DB: acm
+            POSTGRES_USER: docker
+            POSTGRES_PASSWORD: docker
+        ports:
+            - target: 5000
+              published: 4205
+              protocol: tcp
+              mode: bridge
+
+volumes:
+    database-data: # named volumes can be managed easier using docker-compose
