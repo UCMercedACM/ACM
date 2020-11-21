@@ -35,24 +35,6 @@ services:
               published: 8080 # the publicly exposed port
               protocol: tcp # the port protocol (tcp or udp)
               mode: bridge # bridge networks are used to connect multiple containers together
-              
-    # Website written in Angular
-    chapter-website:
-        container_name: Chapter-Website
-        image: chapter-website:v0.3.0
-        restart: unless-stopped
-        build:
-            context: ./Chapter-Website
-            dockerfile: Dockerfile
-        environment:
-            NODE_ENV: production
-        depends_on:
-            - mariposa
-        ports:
-            - target: 4200 # the port inside the container
-              published: 4200 # the publicly exposed port
-              protocol: tcp # the port protocol (tcp or udp)
-              mode: bridge # bridge networks are used to connect multiple containers together
 
     mariposa:
         container_name: mariposa

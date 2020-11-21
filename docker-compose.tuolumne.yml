@@ -36,24 +36,6 @@ services:
               protocol: tcp # the port protocol (tcp or udp)
               mode: bridge # bridge networks are used to connect multiple containers together
 
-    # Website written in Angular
-    chapter-website:
-        container_name: Chapter-Website
-        image: chapter-website:v0.3.0
-        restart: unless-stopped
-        build:
-            context: ./Chapter-Website
-            dockerfile: Dockerfile
-        environment: 
-            NODE_ENV: developement
-        depends_on:
-            - tuolumne
-        ports:
-            - target: 4200 # the port inside the container
-              published: 4200 # the publicly exposed port
-              protocol: tcp # the port protocol (tcp or udp)
-              mode: bridge # bridge networks are used to connect multiple containers together
-
     # Workshop Management API written in PHP
     tuolumne:
         container_name: Tuolumne
