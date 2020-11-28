@@ -1,0 +1,5 @@
+go-diagrams/
+diagrams/
+Dockerfile
+docker-compose.yml
+.gitignore

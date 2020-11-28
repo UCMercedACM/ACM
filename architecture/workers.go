@@ -8,12 +8,12 @@ import (
 	"github.com/blushft/go-diagrams/nodes/gcp"
 )
 
-func workers() {
+func main() {
 	workerCount := 5
 
 	d, err := diagram.New(
-		diagram.Label("Workers"),
 		diagram.Filename("workers"),
+		diagram.Label("Workers"),
 		diagram.Direction("TB"),
 	)
 

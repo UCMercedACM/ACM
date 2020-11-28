@@ -7,8 +7,13 @@ import (
 	"github.com/blushft/go-diagrams/nodes/apps"
 )
 
-func webservice() {
-	d, err := diagram.New(diagram.Label("Web Service"), diagram.Direction("LR"))
+func main() {
+	d, err := diagram.New(
+		diagram.Filename("webservice"),
+		diagram.Label("Web Service"), 
+		diagram.Direction("LR"),
+	)
+
 	if err != nil {
 		log.Fatal(err)
 	}

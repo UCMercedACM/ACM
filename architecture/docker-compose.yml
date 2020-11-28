@@ -1,11 +1,15 @@
 version: "3.8"
 
 services:
-    diagram:
-        container_name: go-diagram
+    test:
+        container_name: test-app
         build:
             context: .
             dockerfile: Dockerfile
+            args:
+                DIAGRAM_NAME: kubernetes
+        stdin_open: true # docker run -i
+        tty: true # docker run -t
         environment:
             GOARCH: "amd64"
             GOBIN: ""
@@ -23,20 +27,6 @@ services:
             CXX: "g++"
             CGO_ENABLED: "1"
         volumes:
-            - .:/go/src/app
-        command: "go run ."
+          - .:/go/src/app
+          - ./diagrams:/home/diagrams
 
-    compiler:
-        container_name: dot-compiler
-        stdin_open: true # docker run -i
-        tty: true # docker run -t
-        restart: on-failure
-        build:
-          context: .
-          dockerfile: Dockerfile.compiler
-        volumes:
-            - .:/dot
-        working_dir: /dot
-        command: sh -c "cd ./go-diagrams && dot -Tpng app.dot > ../app.png"
-        depends_on:
-          - diagram

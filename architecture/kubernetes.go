@@ -7,10 +7,10 @@ import (
 	"github.com/blushft/go-diagrams/nodes/k8s"
 )
 
-func kubernetes() {
+func main() {
 	d, err := diagram.New(
 		diagram.Label("Kubernetes"),
-		diagram.Filename("k8s"),
+		diagram.Filename("kubernetes"),
 		diagram.Direction("TB"),
 	)
 
