@@ -1,13 +1,13 @@
 version: "3.8"
 
 services:
-    test:
-        container_name: test-app
+    architecture:
+        container_name: architecture
         build:
             context: .
             dockerfile: Dockerfile
             args:
-                DIAGRAM_NAME: kubernetes
+                DIAGRAM_NAME: architecture
         stdin_open: true # docker run -i
         tty: true # docker run -t
         environment:
