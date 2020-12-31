@@ -30,12 +30,15 @@ services:
         environment:
             PGADMIN_DEFAULT_EMAIL: "acm@ucmerced.edu"
             PGADMIN_DEFAULT_PASSWORD: "PgAdmin2020!"
+        volumes:
+            - ./mocks:/pgadmin4/mocks
+            - ./database.json:/pgadmin4/servers.json
         ports:
             - target: 80 # the port inside the container
               published: 8080 # the publicly exposed port
               protocol: tcp # the port protocol (tcp or udp)
               mode: bridge # bridge networks are used to connect multiple containers together
-              
+
     # Website written in Angular
     chapter-website:
         container_name: Chapter-Website

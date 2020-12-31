@@ -1,0 +1,14 @@
+{
+    "Servers": {
+        "1": {
+            "Name": "ACM",
+            "Group": "ACM",
+            "Port": 35432,
+            "Username": "docker",
+            "Password": "docker",
+            "Host": "host.docker.internal",
+            "SSLMode": "prefer",
+            "MaintenanceDB": "acm"
+        }
+    }
+}
