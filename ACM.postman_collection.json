@@ -1,0 +1,569 @@
+{
+  "info": {
+    "_postman_id": "1ceffaa0-a938-4970-8f12-1dbaaa273028",
+    "name": "ACM",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "item": [
+    {
+      "name": "Events API",
+      "item": [
+        {
+          "name": "Prod: GET all events",
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          },
+          "request": {
+            "method": "GET",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": ""
+            },
+            "url": {
+              "raw": "https://onama-events.herokuapp.com/api/events",
+              "protocol": "https",
+              "host": ["onama-events", "herokuapp", "com"],
+              "path": ["api", "events"]
+            },
+            "description": "Get list of calendar events from go api server"
+          },
+          "response": []
+        },
+        {
+          "name": "Dev: GET all events",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "localhost:30314/api/events",
+              "host": ["localhost"],
+              "port": "30314",
+              "path": ["api", "events"]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Dev: POST new event",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "name": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n\t\"name\": \"ACM Website Meeting\",\n\t\"description\": \"ACM's Website project meeting for all sub teams\",\n\t\"type\": \"meeting\",\n\t\"date\": \"February 16, 2020\",\n\t\"startTime\": \"2:00 PM\",\n\t\"endTime\": \"6:00 PM\"\n}"
+            },
+            "url": {
+              "raw": "http://localhost:30314/api/event",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "30314",
+              "path": ["api", "event"]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Prod: POST new event",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "name": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n\t\"name\": \"ACM Neural Network Meeting\",\n\t\"description\": \"Going over current progress on the Video Game CNN project\",\n\t\"type\": \"meeting\",\n\t\"date\": \"February 21, 2020\",\n\t\"startTime\": \"3:00 PM\",\n\t\"endTime\": \"3:30 PM\"\n}"
+            },
+            "url": {
+              "raw": "https://onama-events.herokuapp.com/api/event",
+              "protocol": "https",
+              "host": ["onama-events", "herokuapp", "com"],
+              "path": ["api", "event"]
+            }
+          },
+          "response": []
+        }
+      ],
+      "event": [
+        {
+          "listen": "prerequest",
+          "script": {
+            "id": "4af75a85-1f55-4ba6-a7a1-99c6cdfb40ac",
+            "type": "text/javascript",
+            "exec": [""]
+          }
+        },
+        {
+          "listen": "test",
+          "script": {
+            "id": "e35d249f-89be-41d4-b2d5-06b0f8c2a6b6",
+            "type": "text/javascript",
+            "exec": [""]
+          }
+        }
+      ],
+      "protocolProfileBehavior": {}
+    },
+    {
+      "name": "Member API",
+      "item": [
+        {
+          "name": "Dev",
+          "item": [
+            {
+              "name": "auth",
+              "item": [
+                {
+                  "name": "dev: register",
+                  "event": [
+                    {
+                      "listen": "test",
+                      "script": {
+                        "id": "0e66d8f5-b8e0-4703-8e90-d37e1b2d44b0",
+                        "exec": [
+                          "pm.test(\"Response time is less than 300ms\", function () {",
+                          "    pm.expect(pm.response.responseTime).to.be.below(300);",
+                          "});",
+                          "",
+                          "pm.test(\"Successful POST request\", function () {",
+                          "    pm.expect(pm.response.code).to.be.oneOf([201,202]);",
+                          "});",
+                          "",
+                          "pm.test(\"Content-Type is present\", function () {",
+                          "    pm.response.to.have.header(\"Content-Type\");",
+                          "});",
+                          "",
+                          "var jsonData = JSON.parse(responseBody);",
+                          "",
+                          "pm.environment.set(\"accessToken\", jsonData.token.accessToken);"
+                        ],
+                        "type": "text/javascript"
+                      }
+                    }
+                  ],
+                  "request": {
+                    "method": "POST",
+                    "header": [],
+                    "body": {
+                      "mode": "raw",
+                      "raw": "{\n\t\"email\": \"acm@ucmerced.edu\",\n\t\"password\": \"UniquePassword987#$%\"\n}",
+                      "options": {
+                        "raw": {
+                          "language": "json"
+                        }
+                      }
+                    },
+                    "url": {
+                      "raw": "http://localhost:4201/api/auth/register",
+                      "protocol": "http",
+                      "host": ["localhost"],
+                      "port": "4201",
+                      "path": ["api", "auth", "register"]
+                    },
+                    "description": "Sign up a new member"
+                  },
+                  "response": []
+                },
+                {
+                  "name": "dev: login",
+                  "event": [
+                    {
+                      "listen": "prerequest",
+                      "script": {
+                        "id": "279d453d-7ad1-40a9-a039-bf062bdf08c4",
+                        "exec": ["pm.environment.get(\"accessToken\");"],
+                        "type": "text/javascript"
+                      }
+                    },
+                    {
+                      "listen": "test",
+                      "script": {
+                        "id": "92d16230-580a-4750-be84-419278066796",
+                        "exec": [
+                          "pm.test(\"Successful POST request\", function () {",
+                          "    pm.expect(pm.response.code).to.be.oneOf([201,202]);",
+                          "});",
+                          "",
+                          "pm.test(\"Content-Type is present\", function () {",
+                          "    pm.response.to.have.header(\"Content-Type\");",
+                          "});",
+                          "",
+                          "pm.test(\"Response time is less than 300ms\", function () {",
+                          "    pm.expect(pm.response.responseTime).to.be.below(300);",
+                          "});",
+                          "",
+                          ""
+                        ],
+                        "type": "text/javascript"
+                      }
+                    }
+                  ],
+                  "request": {
+                    "auth": {
+                      "type": "bearer",
+                      "bearer": [
+                        {
+                          "key": "token",
+                          "value": "{{accessToken}}",
+                          "type": "string"
+                        }
+                      ]
+                    },
+                    "method": "POST",
+                    "header": [],
+                    "body": {
+                      "mode": "raw",
+                      "raw": "{\n\t\"email\": \"acm@ucmerced.edu\",\n\t\"password\": \"UniquePassword987#$%\"\n}",
+                      "options": {
+                        "raw": {
+                          "language": "json"
+                        }
+                      }
+                    },
+                    "url": {
+                      "raw": "http://localhost:4201/api/auth/login",
+                      "protocol": "http",
+                      "host": ["localhost"],
+                      "port": "4201",
+                      "path": ["api", "auth", "login"]
+                    }
+                  },
+                  "response": []
+                }
+              ],
+              "protocolProfileBehavior": {},
+              "_postman_isSubFolder": true
+            },
+            {
+              "name": "members",
+              "item": [
+                {
+                  "name": "Get List of all Members",
+                  "protocolProfileBehavior": {
+                    "disableBodyPruning": true
+                  },
+                  "request": {
+                    "method": "GET",
+                    "header": [
+                      {
+                        "key": "Content-Type",
+                        "name": "Content-Type",
+                        "value": "application/json",
+                        "type": "text"
+                      }
+                    ],
+                    "body": {
+                      "mode": "raw",
+                      "raw": "",
+                      "options": {
+                        "raw": {}
+                      }
+                    },
+                    "url": {
+                      "raw": "http://localhost:4201/api/members",
+                      "protocol": "http",
+                      "host": ["localhost"],
+                      "port": "4201",
+                      "path": ["api", "members"]
+                    }
+                  },
+                  "response": []
+                },
+                {
+                  "name": "Gets member data based on email",
+                  "request": {
+                    "method": "GET",
+                    "header": [],
+                    "url": {
+                      "raw": "http://localhost:4201/api/member/?email=tsmith@ucmerced.edu",
+                      "protocol": "http",
+                      "host": ["localhost"],
+                      "port": "4201",
+                      "path": ["api", "member", ""],
+                      "query": [
+                        {
+                          "key": "email",
+                          "value": "tsmith@ucmerced.edu"
+                        }
+                      ]
+                    }
+                  },
+                  "response": []
+                },
+                {
+                  "name": "Create a new member",
+                  "request": {
+                    "method": "POST",
+                    "header": [
+                      {
+                        "key": "Content-Type",
+                        "name": "Content-Type",
+                        "type": "text",
+                        "value": "application/json"
+                      }
+                    ],
+                    "body": {
+                      "mode": "raw",
+                      "raw": "{\n    \"studentId\": \"100222333\",\n    \"firstName\": \"TOM\",\n    \"lastName\": \"Smith\",\n    \"email\": \"tsmith@ucmerced.edu\",\n    \"password\": \"acmucm\",\n    \"year\": \"freshmen\",\n    \"github\": \"https://github.com/tsmith\",\n    \"linkedin\": \"https://www.linkedin.com/in/tsmith\",\n    \"personalWebsite\": null,\n    \"stackOverflow\": null,\n    \"portfolium\": null,\n    \"handshake\": null,\n    \"slack\": \"tsmith\",\n    \"discord\": \"Anlisp#9248\",\n    \"image\": null\n}",
+                      "options": {
+                        "raw": {
+                          "language": "json"
+                        }
+                      }
+                    },
+                    "url": {
+                      "raw": "http://localhost:4201/api/signup",
+                      "protocol": "http",
+                      "host": ["localhost"],
+                      "port": "4201",
+                      "path": ["api", "signup"]
+                    }
+                  },
+                  "response": []
+                }
+              ],
+              "protocolProfileBehavior": {},
+              "_postman_isSubFolder": true
+            },
+            {
+              "name": "dev: status",
+              "event": [
+                {
+                  "listen": "test",
+                  "script": {
+                    "id": "a8baa544-3121-4b56-9f47-0bf635d67791",
+                    "exec": [
+                      "pm.test(\"Status code is 200\", function () {",
+                      "    pm.response.to.have.status(200);",
+                      "});",
+                      "",
+                      "pm.test(\"Content-Type is present\", function () {",
+                      "    pm.response.to.have.header(\"Content-Type\");",
+                      "});",
+                      "",
+                      "pm.test(\"Response time is less than 200ms\", function () {",
+                      "    pm.expect(pm.response.responseTime).to.be.below(200);",
+                      "});"
+                    ],
+                    "type": "text/javascript"
+                  }
+                }
+              ],
+              "request": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "http://localhost:4201/api/status",
+                  "protocol": "http",
+                  "host": ["localhost"],
+                  "port": "4201",
+                  "path": ["api", "status"]
+                },
+                "description": "Receive the status of the api"
+              },
+              "response": []
+            }
+          ],
+          "protocolProfileBehavior": {},
+          "_postman_isSubFolder": true
+        },
+        {
+          "name": "Prod",
+          "item": [
+            {
+              "name": "auth",
+              "item": [
+                {
+                  "name": "prod: register",
+                  "event": [
+                    {
+                      "listen": "test",
+                      "script": {
+                        "id": "5e46bbc6-b1e1-44c7-80b4-ee982dd41702",
+                        "exec": [
+                          "pm.test(\"Response time is less than 300ms\", function () {",
+                          "    pm.expect(pm.response.responseTime).to.be.below(300);",
+                          "});",
+                          "",
+                          "pm.test(\"Successful POST request\", function () {",
+                          "    pm.expect(pm.response.code).to.be.oneOf([201,202]);",
+                          "});",
+                          "",
+                          "pm.test(\"Content-Type is present\", function () {",
+                          "    pm.response.to.have.header(\"Content-Type\");",
+                          "});",
+                          "",
+                          "var jsonData = JSON.parse(responseBody);",
+                          "",
+                          "pm.environment.set(\"accessToken\", jsonData.token.accessToken);"
+                        ],
+                        "type": "text/javascript"
+                      }
+                    }
+                  ],
+                  "request": {
+                    "method": "POST",
+                    "header": [],
+                    "body": {
+                      "mode": "raw",
+                      "raw": "{\n\t\"email\": \"acm@ucmerced.edu\",\n\t\"password\": \"UniquePassword987#$%\"\n}",
+                      "options": {
+                        "raw": {
+                          "language": "json"
+                        }
+                      }
+                    },
+                    "url": {
+                      "raw": "https://acm-ucm-member-api.herokuapp.com/api/auth/register",
+                      "protocol": "https",
+                      "host": ["acm-ucm-member-api", "herokuapp", "com"],
+                      "path": ["api", "auth", "register"]
+                    }
+                  },
+                  "response": []
+                },
+                {
+                  "name": "prod: login",
+                  "event": [
+                    {
+                      "listen": "prerequest",
+                      "script": {
+                        "id": "6ce75e67-6087-402e-bd38-6ba791a2d675",
+                        "exec": ["pm.environment.get(\"accessToken\");"],
+                        "type": "text/javascript"
+                      }
+                    },
+                    {
+                      "listen": "test",
+                      "script": {
+                        "id": "3f422e22-fb09-44c1-bd05-ce4cb600aac6",
+                        "exec": [
+                          "pm.test(\"Successful POST request\", function () {",
+                          "    pm.expect(pm.response.code).to.be.oneOf([201,202]);",
+                          "});",
+                          "",
+                          "pm.test(\"Content-Type is present\", function () {",
+                          "    pm.response.to.have.header(\"Content-Type\");",
+                          "});",
+                          "",
+                          "pm.test(\"Response time is less than 300ms\", function () {",
+                          "    pm.expect(pm.response.responseTime).to.be.below(300);",
+                          "});",
+                          "",
+                          ""
+                        ],
+                        "type": "text/javascript"
+                      }
+                    }
+                  ],
+                  "request": {
+                    "auth": {
+                      "type": "bearer",
+                      "bearer": [
+                        {
+                          "key": "token",
+                          "value": "{{accessToken}}",
+                          "type": "string"
+                        }
+                      ]
+                    },
+                    "method": "POST",
+                    "header": [],
+                    "body": {
+                      "mode": "raw",
+                      "raw": "{\n\t\"email\": \"acm@ucmerced.edu\",\n\t\"password\": \"UniquePassword987#$%\"\n}",
+                      "options": {
+                        "raw": {
+                          "language": "json"
+                        }
+                      }
+                    },
+                    "url": {
+                      "raw": "https://acm-ucm-member-api.herokuapp.com/api/auth/login",
+                      "protocol": "https",
+                      "host": ["acm-ucm-member-api", "herokuapp", "com"],
+                      "path": ["api", "auth", "login"]
+                    }
+                  },
+                  "response": []
+                }
+              ],
+              "protocolProfileBehavior": {},
+              "_postman_isSubFolder": true
+            },
+            {
+              "name": "prod: status",
+              "event": [
+                {
+                  "listen": "test",
+                  "script": {
+                    "id": "58241edb-7103-45fb-80c8-8422bd14fc58",
+                    "exec": [
+                      "pm.test(\"Status code is 200\", function () {",
+                      "    pm.response.to.have.status(200);",
+                      "});",
+                      "",
+                      "pm.test(\"Content-Type is present\", function () {",
+                      "    pm.response.to.have.header(\"Content-Type\");",
+                      "});",
+                      "",
+                      "pm.test(\"Response time is less than 200ms\", function () {",
+                      "    pm.expect(pm.response.responseTime).to.be.below(200);",
+                      "});"
+                    ],
+                    "type": "text/javascript"
+                  }
+                }
+              ],
+              "request": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "https://acm-ucm-member-api.herokuapp.com/api/status",
+                  "protocol": "https",
+                  "host": ["acm-ucm-member-api", "herokuapp", "com"],
+                  "path": ["api", "status"]
+                }
+              },
+              "response": []
+            }
+          ],
+          "protocolProfileBehavior": {},
+          "_postman_isSubFolder": true
+        }
+      ],
+      "event": [
+        {
+          "listen": "prerequest",
+          "script": {
+            "id": "1c12cca2-98c4-4bdc-ab80-5215b99f8e9c",
+            "type": "text/javascript",
+            "exec": [""]
+          }
+        },
+        {
+          "listen": "test",
+          "script": {
+            "id": "51266ce1-e758-4a2e-829f-0f9445230d67",
+            "type": "text/javascript",
+            "exec": [""]
+          }
+        }
+      ],
+      "protocolProfileBehavior": {}
+    }
+  ],
+  "protocolProfileBehavior": {}
+}
