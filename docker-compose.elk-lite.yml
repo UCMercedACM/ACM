@@ -30,6 +30,9 @@ services:
         environment:
             PGADMIN_DEFAULT_EMAIL: "acm@ucmerced.edu"
             PGADMIN_DEFAULT_PASSWORD: "PgAdmin2020!"
+        volumes:
+            - ./mocks:/pgadmin4/mocks
+            - ./database.json:/pgadmin4/servers.json
         ports:
             - target: 80 # the port inside the container
               published: 8080 # the publicly exposed port

@@ -30,6 +30,9 @@ services:
         environment:
             PGADMIN_DEFAULT_EMAIL: "acm@ucmerced.edu"
             PGADMIN_DEFAULT_PASSWORD: "PgAdmin2020!"
+        volumes:
+            - ./mocks:/pgadmin4/mocks
+            - ./database.json:/pgadmin4/servers.json
         ports:
             - target: 80 # the port inside the container
               published: 8080 # the publicly exposed port
@@ -44,7 +47,7 @@ services:
         build:
             context: ./Chapter-Website
             dockerfile: Dockerfile
-        environment: 
+        environment:
             NODE_ENV: developement
         depends_on:
             - half-dome
@@ -83,29 +86,29 @@ services:
               mode: bridge # bridge networks are used to connect multiple containers together
 
     # Workshop Management API written in PHP
-    # tuolumne:
-    #     container_name: Tuolumne
-    #     image: tuolumne:v1.0
-    #     restart: unless-stopped
-    #     build:
-    #         context: ./Tuolumne
-    #         dockerfile: Dockerfile
-    #     env_file:
-    #         - ./Tuolumne/.env
-    #     depends_on:
-    #         - postgres
-    #         - pgadmin
-    #     environment:
-    #         DB_HOST: host.docker.internal
-    #         DB_PORT: 35432
-    #         DB_DATABASE: acm
-    #         DB_USERNAME: docker
-    #         DB_PASSWORD: docker
-    #     ports:
-    #         - target: 4202 # the port inside the container
-    #           published: 4202 # the publicly exposed port
-    #           protocol: tcp # the port protocol (tcp or udp)
-    #           mode: bridge # bridge networks are used to connect multiple containers together
+    tuolumne:
+        container_name: Tuolumne
+        image: tuolumne:v1.0
+        restart: unless-stopped
+        build:
+            context: ./Tuolumne
+            dockerfile: Dockerfile
+        env_file:
+            - ./Tuolumne/.env
+        depends_on:
+            - postgres
+            - pgadmin
+        environment:
+            DB_HOST: host.docker.internal
+            DB_PORT: 35432
+            DB_DATABASE: acm
+            DB_USERNAME: docker
+            DB_PASSWORD: docker
+        ports:
+            - target: 4202 # the port inside the container
+              published: 4202 # the publicly exposed port
+              protocol: tcp # the port protocol (tcp or udp)
+              mode: bridge # bridge networks are used to connect multiple containers together
 
     # Events Management API written in Golang
     tenaya:
@@ -132,7 +135,7 @@ services:
               published: 4203 # the publicly exposed port
               protocol: tcp # the port protocol (tcp or udp)
               mode: bridge # bridge networks are used to connect multiple containers together
-    
+
     # LAN Party and Tournament Bracket Management API
     mariposa:
         container_name: mariposa

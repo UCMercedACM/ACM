@@ -39,30 +39,44 @@ services:
               protocol: tcp # the port protocol (tcp or udp)
               mode: bridge # bridge networks are used to connect multiple containers together
 
-    # Workshop Management API written in PHP
-    tuolumne:
-        container_name: Tuolumne
-        image: tuolumne:v1.0
+    # Website written in Angular
+    chapter-website:
+        container_name: Chapter-Website
+        image: chapter-website:v0.3.0
         restart: unless-stopped
         build:
-            context: ./Tuolumne
+            context: ./Chapter-Website
             dockerfile: Dockerfile
-        env_file:
-            - ./Tuolumne/.env
+        environment:
+            NODE_ENV: production
+        depends_on:
+            - cathedral
+        ports:
+            - target: 4200 # the port inside the container
+              published: 4200 # the publicly exposed port
+              protocol: tcp # the port protocol (tcp or udp)
+              mode: bridge # bridge networks are used to connect multiple containers together
+
+    cathedral:
+        container_name: cathedral
+        image: cathedral:v0.0.1
+        build:
+            context: ./Cathedral
+            dockerfile: Dockerfile
         depends_on:
             - postgres
             - pgadmin
         environment:
-            DB_HOST: host.docker.internal
-            DB_PORT: 35432
-            DB_DATABASE: acm
-            DB_USERNAME: docker
-            DB_PASSWORD: docker
+            POSTGRES_HOST: host.docker.internal
+            POSTGRES_PORT: 35432
+            POSTGRES_DB: acm
+            POSTGRES_USER: docker
+            POSTGRES_PASSWORD: docker
         ports:
-            - target: 4202 # the port inside the container
-              published: 4202 # the publicly exposed port
-              protocol: tcp # the port protocol (tcp or udp)
-              mode: bridge # bridge networks are used to connect multiple containers together
+            - target: 5000
+              published: 4205
+              protocol: tcp
+              mode: bridge
 
 volumes:
     database-data: # named volumes can be managed easier using docker-compose

@@ -16,6 +16,3 @@
 [submodule "Cathedral"]
 	path = Cathedral
 	url = https://github.com/UCMercedACM/Cathedral.git
-[submodule "postman"]
-	path = postman
-	url = https://github.com/UCMercedACM/website-pm-tests.git
